@@ -1,17 +1,37 @@
+import java.util.Random;
+
 public class Main {
+
+    private static double testStack(Stack<Integer> stack, int opCount) {
+        long startTime = System.nanoTime();
+
+        Random random = new Random();
+        for (int i = 0; i < opCount; i++) {
+            stack.push(random.nextInt(Integer.MAX_VALUE));
+        }
+        for (int i = 0; i < opCount; i++) {
+            stack.pop();
+        }
+
+        long endTime = System.nanoTime();
+
+        return (endTime - startTime) / 1000000000.0;
+    }
 
     public static void main(String[] args) {
 
-        ArrayStack<Integer> stack = new ArrayStack<Integer>();
+        int opCount = 1000000;
 
-        for (int i = 0; i < 5; i++) {
-            stack.push(i);
-            System.out.println(stack);
-        }
-        stack.pop();
-        System.out.println(stack);
+        ArrayStack<Integer> arrayStack = new ArrayStack<Integer>();
+        double time1 = testStack(arrayStack, opCount);
+        System.out.println("ArrayStack time: " + time1 + " s");
 
-        int peek = stack.peek();
-        System.out.println(peek);
+
+        LinkedListStack<Integer> linkedListStack = new LinkedListStack<Integer>();
+        double time2 = testStack(linkedListStack, opCount);
+        System.out.println("LinkedListStack time: " + time2 + " s");
+
+        // LinkedListStack 中要包含更多new操作，数据规模大到一定程度后就会更耗时一点
+        // 它们之间的复杂度没有巨大差距（同一级别的）
     }
 }
