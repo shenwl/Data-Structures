@@ -1,20 +1,40 @@
 // LeetCode 203题 使用递归
 public class Solution3 {
 
-    public ListNode removeElements(ListNode head, int val) {
+    private String generateDepthString(int depth) {
+        StringBuilder res = new StringBuilder();
+        for (int i = 0; i < depth; i++) {
+            res.append("--");
+        }
+        return res.toString();
+    }
+
+    public ListNode removeElements(ListNode head, int val, int depth) {
+
+        String depthString = generateDepthString(depth);
+
+        System.out.print(depthString);
+        System.out.println("Call: remove " + val + " in " + head);
+
         if (head == null) {
+            System.out.print(depthString);
             return null;
         }
-        head.next = removeElements(head.next, val);
+        ListNode res = removeElements(head.next, val, depth + 1);
+        System.out.print(depthString);
+        System.out.println("After remove " + val + " : " + res);
 
-//        if (head.val == val) {
-//            return head.next;
-//        } else {
-//            return head;
-//        }
+        ListNode ret;
+        if (head.val == val) {
+            ret = res;
+        } else {
+            head.next = res;
+            ret = head;
+        }
 
-        // 改良
-        return head.val == val ? head.next : head;
+        System.out.print(depthString);
+        System.out.println("Return " + ret);
+        return ret;
     }
 
     public static void main(String[] args) {
@@ -22,7 +42,7 @@ public class Solution3 {
         ListNode head = new ListNode(nums);
         System.out.println(head);
 
-        ListNode res = (new Solution()).removeElements(head, 6);
+        ListNode res = (new Solution()).removeElements(head, 6, 0);
         System.out.println(res);
     }
 }
